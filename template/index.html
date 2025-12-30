@@ -1,0 +1,50 @@
+ {% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section rounded text-center">
+    <h1 class="display-4">Welcome to TechShop</h1>
+    <p class="lead">Your one-stop destination for tech gadgets and accessories</p>
+    <a href="{{ url_for('products') }}" class="btn btn-light btn-lg">Shop Now</a>
+</div>
+
+<!-- Welcome Message -->
+{% if user_name %}
+<div class="alert alert-info">
+    <h4>Welcome back, {{ user_name }}!</h4>
+</div>
+{% endif %}
+
+<!-- Featured Products -->
+<h2 class="mb-4">Featured Products</h2>
+
+<div class="row">
+    {% for product in featured_products %}
+    <div class="col-lg-4 col-md-6">
+        <div class="card product-card">
+            <img src="{{ url_for('static', filename='images/products/' ~ product.pid ~ '.jpg') }}" 
+                 class="card-img-top product-image" 
+                 alt="{{ product.details }}"
+                 onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/products/placeholder.jpg') }}'">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.details }}</h5>
+                <p class="card-text">
+                    <strong class="text-primary">₹{{ product.price }}</strong><br>
+                    <small class="text-muted">{{ product.brand }}</small>
+                </p>
+                <button class="btn btn-primary w-100" onclick="addToCart({{ product.pid }})">
+                    <i class="fas fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <div class="alert alert-warning text-center">
+            <h4>No products available</h4>
+            <p>Check your database connection or add some products.</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
