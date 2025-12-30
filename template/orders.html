@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4">My Orders</h2>
+
+{% if orders %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                        <th>Estimated Delivery</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>#{{ order.order_id }}</td>
+                        <td>₹{{ order.total_amt }}</td>
+                        <td>
+                            {% if order.status == 'delivered' %}
+                                <span class="badge bg-success">{{ order.status }}</span>
+                            {% elif order.status == 'shipped' %}
+                                <span class="badge bg-primary">{{ order.status }}</span>
+                            {% else %}
+                                <span class="badge bg-warning">{{ order.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ order.estimated_delivery }} days</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+    <h3>No Orders Yet</h3>
+    <p>You haven't placed any orders yet.</p>
+    <a href="{{ url_for('products') }}" class="btn btn-primary">Start Shopping</a>
+</div>
+{% endif %}
+{% endblock %}
